@@ -25,10 +25,11 @@ jobs:
       - name: remove index.js from dist folder
         run: |
           mv ./dist/index.js ./index.js
+          mv -f .dist/src/* ./src/
       - name: zip
         uses: montudor/action-zip@v0.1.0
         with:
-          args: zip -qq -r ./bundle.zip ./index.js ./package.json ./dist/src/
+          args: zip -qq -r ./bundle.zip ./index.js ./package.json ./src/
       - name: default deploy
         uses: appleboy/lambda-action@master
         with:
