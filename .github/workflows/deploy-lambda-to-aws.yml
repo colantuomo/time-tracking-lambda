@@ -24,7 +24,7 @@ jobs:
           CI: true
       - name: remove index.js from dist folder
         run: |
-          mv ./dist/index.js ./index.js
+          mv ./dist/index.mjs ./index.js
       - name: zip
         uses: montudor/action-zip@v0.1.0
         with:
