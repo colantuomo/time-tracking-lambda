@@ -1,10 +1,6 @@
-import { JWTPayload } from "jose";
-
-export interface JwtValues extends JWTPayload {
+export interface JwtValues {
     password: string;
-    exp: number;
     user: string;
-    iat: number;
 }
 
 export interface User {

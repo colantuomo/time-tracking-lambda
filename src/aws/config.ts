@@ -1,6 +1,6 @@
-import AWS from 'aws-sdk';
-import dotenv from 'dotenv';
-dotenv.config();
+import { config, DynamoDB } from 'aws-sdk';
+import { config as dotenvConfig } from 'dotenv';
+dotenvConfig();
 
 export enum DatabaseTables {
     users = 'users',
@@ -27,8 +27,8 @@ type DynamoFilter = {
 }
 
 function connectToDynamoDB() {
-    AWS.config.update(configAWS.aws_remote_config);
-    return new AWS.DynamoDB.DocumentClient();
+    config.update(configAWS.aws_remote_config);
+    return new DynamoDB.DocumentClient();
 }
 
 export async function scanTableWithParams<T>(tableName: DatabaseTables, filters: DynamoFilter): Promise<T> {
@@ -47,6 +47,6 @@ export async function insertNewRecord<T>(tableName: DatabaseTables, item: T): Pr
         docClient.put({
             TableName: tableName,
             Item: item as AWS.DynamoDB.DocumentClient.PutItemInputAttributeMap,
-        }).promise().then(data => resolve()).catch(error => reject(error));
+        }).promise().then(_ => resolve()).catch(error => reject(error));
     });
 }
