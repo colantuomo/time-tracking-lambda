@@ -1,4 +1,5 @@
 import { jwtVerify } from 'jose';
+import { JwtValues } from './interfaces';
 
 const secret = new TextEncoder().encode(process.env.SECRET_KEY)
 
@@ -14,7 +15,7 @@ export async function validateJWT(token: string) {
         const { payload, protectedHeader } = await jwtVerify(token, secret);
         return {
             isValid: true,
-            payload,
+            payload: payload as JwtValues,
             protectedHeader
         };
     } catch (error: any) {

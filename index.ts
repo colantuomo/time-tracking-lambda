@@ -19,9 +19,12 @@ export const handler: Handler = async (event, context) => {
         });
     }
 
+    const key = process.env.SECRET_KEY;
+
     return formatResponse(200, {
         timeTracking: {},
         referenceDate: date,
-        payload
+        payload,
+        key
     })
 };
