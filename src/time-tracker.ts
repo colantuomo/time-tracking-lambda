@@ -13,16 +13,25 @@ export async function insertNewTimeTracking(date: Date, user: User) {
     if (hasTimeTracking) {
         const { id, referenceDate, lastAction, trackings, username } = tracking as TimeTrackingItem;
 
-        const trackingType = lastAction === 'checkin' ? 'checkout' : 'checkin';
+        if (lastAction === "checkin") {
+            const lastRecordIndex = trackings.length - 1;
+            trackings[lastRecordIndex]["checkout"] = dateWithHours;
+        } else {
+            trackings.push({
+                checkin: dateWithHours,
+            });
+        }
 
-        const newTrackings = [...trackings, { [trackingType]: dateWithHours }];
-        return insertNewRecord<TimeTrackingItem>(DatabaseTables.timeTrackingRecords, {
-            id,
-            referenceDate,
-            lastAction: trackingType,
-            trackings: newTrackings as Tracking[],
-            username
-        });
+        return insertNewRecord<TimeTrackingItem>(
+            DatabaseTables.timeTrackingRecords,
+            {
+                id,
+                referenceDate,
+                lastAction: lastAction === "checkin" ? "checkout" : "checkin",
+                trackings,
+                username,
+            }
+        );
     }
 
     return insertNewRecord<TimeTrackingItem>(DatabaseTables.timeTrackingRecords, {

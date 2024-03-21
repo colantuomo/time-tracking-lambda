@@ -30,7 +30,7 @@ export const handler: Handler = async (event, context) => {
         const user = users[0];
         await insertNewTimeTracking(date, user);
         return formatResponse(200, {
-            message: `Time tracking succesfully inserted in ${formattedDate} - for ${user.username}`
+            message: `Time tracking succesfully inserted in ${date} for ${user.username}`
         })
     } catch (error) {
         return formatResponse(500, {
