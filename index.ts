@@ -23,7 +23,6 @@ export const handler: Handler = async (event, context) => {
     const { user: username, password } = payload!;
 
     const date = new Date();
-    const formattedDate = formatDate(new Date());
 
     try {
         const users = await getUser(username, password);

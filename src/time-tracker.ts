@@ -9,8 +9,7 @@ export async function insertNewTimeTracking(date: Date, user: User) {
     const dateWithHours = date.toISOString();
 
     const { hasTimeTracking, tracking } = await getTimeTrackingByDate(referenceDate);
-
-    if (hasTimeTracking) {
+    if (hasTimeTracking && tracking?.username === user.username) {
         const { id, referenceDate, lastAction, trackings, username } = tracking as TimeTrackingItem;
 
         if (lastAction === "checkin") {
@@ -53,7 +52,7 @@ async function getTimeTrackingByDate(referenceDate: string) {
     });
 
     if (timeTrackings.length === 0) {
-        return { hasTimeTracking: false, tracking: [] };
+        return { hasTimeTracking: false, tracking: undefined };
     }
     return { hasTimeTracking: true, tracking: timeTrackings[0] };
 }
