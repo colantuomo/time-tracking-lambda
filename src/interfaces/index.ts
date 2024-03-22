@@ -1,5 +1,4 @@
 export interface JwtValues {
-    password: string;
     user: string;
 }
 

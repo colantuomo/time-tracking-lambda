@@ -20,12 +20,12 @@ export const handler: Handler = async (event, context) => {
         });
     }
 
-    const { user: username, password } = payload!;
+    const { user: username } = payload!;
 
     const date = new Date();
 
     try {
-        const users = await getUser(username, password);
+        const users = await getUser(username);
         const user = users[0];
         await insertNewTimeTracking(date, user);
         return formatResponse(200, {
