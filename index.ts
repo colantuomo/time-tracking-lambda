@@ -1,5 +1,5 @@
 import { Handler } from "aws-lambda";
-import { formatResponse, formatDate } from './src/util';
+import { formatResponse } from './src/util';
 import { validateJWT } from './src/auth/token-validator';
 import { getUser } from './src/user';
 import { insertNewTimeTracking } from './src/time-tracker'
