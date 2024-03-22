@@ -14,7 +14,8 @@
     ],
     "splitting": false,
     "clean": true,
-    "target": "node20"
+    "target": "node20",
+    "outdir": "dist"
   },
   "keywords": [],
   "author": "",
