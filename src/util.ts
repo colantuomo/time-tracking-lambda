@@ -1,6 +1,9 @@
-export function formatResponse<T>(status: number, body: T) {
+export function formatResponse<T>(statusCode: number, body: T) {
     return {
-        status,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        statusCode,
         body
     }
 }
