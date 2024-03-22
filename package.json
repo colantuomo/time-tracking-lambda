@@ -14,7 +14,7 @@
     ],
     "splitting": false,
     "clean": true,
-    "target": "node20",
+    "target": "node18",
     "outdir": "dist"
   },
   "keywords": [],
