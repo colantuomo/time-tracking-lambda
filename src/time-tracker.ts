@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { DatabaseTables, insertNewRecord, scanTableWithParams } from "./aws/config";
-import { TimeTrackingItem, Tracking, User } from "./interfaces";
+import { TimeTrackingItem, User } from "./interfaces";
 import { formatDate } from './util';
 
 export async function insertNewTimeTracking(date: Date, user: User) {
@@ -8,17 +8,17 @@ export async function insertNewTimeTracking(date: Date, user: User) {
     const referenceDate = formatDate(date);
     const dateWithHours = date.toISOString();
 
-    const { hasTimeTracking, tracking } = await getTimeTrackingByDate(referenceDate);
-    if (hasTimeTracking && tracking?.username === user.username) {
+    const { hasTimeTracking, tracking } = await getTimeTrackingByDate(referenceDate, user.username);
+    if (hasTimeTracking) {
         const { id, referenceDate, lastAction, trackings, username } = tracking as TimeTrackingItem;
 
+        let newTrackings = [];
         if (lastAction === "checkin") {
             const lastRecordIndex = trackings.length - 1;
             trackings[lastRecordIndex]["checkout"] = dateWithHours;
+            newTrackings = [...trackings]
         } else {
-            trackings.push({
-                checkin: dateWithHours,
-            });
+            newTrackings = [...trackings, { checkin: dateWithHours }]
         }
 
         return insertNewRecord<TimeTrackingItem>(
@@ -27,7 +27,7 @@ export async function insertNewTimeTracking(date: Date, user: User) {
                 id,
                 referenceDate,
                 lastAction: lastAction === "checkin" ? "checkout" : "checkin",
-                trackings,
+                trackings: newTrackings,
                 username,
             }
         );
@@ -43,11 +43,15 @@ export async function insertNewTimeTracking(date: Date, user: User) {
 
 }
 
-async function getTimeTrackingByDate(referenceDate: string) {
+async function getTimeTrackingByDate(referenceDate: string, username: string) {
     const timeTrackings = await scanTableWithParams<TimeTrackingItem[]>(DatabaseTables.timeTrackingRecords, {
         'referenceDate': {
             ComparisonOperator: 'EQ',
             AttributeValueList: [referenceDate]
+        },
+        'username': {
+            ComparisonOperator: 'EQ',
+            AttributeValueList: [username]
         }
     });
 
