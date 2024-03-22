@@ -6,7 +6,8 @@
   "module": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --build"
+    "build": "tsc --build",
+    "build:tsup": "tsup"
   },
   "tsup": {
     "entry": [
@@ -14,9 +15,7 @@
     ],
     "splitting": false,
     "clean": true,
-    "format": "esm",
-    "target": "esnext",
-    "minify": true
+    "target": "node20"
   },
   "keywords": [],
   "author": "",
