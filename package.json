@@ -14,8 +14,7 @@
     ],
     "splitting": false,
     "clean": true,
-    "target": "node18",
-    "outdir": "dist"
+    "target": "node18"
   },
   "keywords": [],
   "author": "",
